@@ -11,9 +11,7 @@ public class TrueGuard extends Guard{
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof TrueGuard)
-            return true;
-        return false;
+        return o instanceof TrueGuard;
     }
 
     @Override
@@ -23,6 +21,6 @@ public class TrueGuard extends Guard{
 
     @Override
     public int hashCode() {
-        return Objects.hash(false);
+        return Objects.hash(true);
     }
 }

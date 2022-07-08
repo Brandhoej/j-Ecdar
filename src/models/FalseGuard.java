@@ -2,7 +2,7 @@ package models;
 
 import java.util.Objects;
 
-public class FalseGuard extends Guard{
+public class FalseGuard extends Guard {
 
     @Override
     int getMaxConstant(Clock clock) {
@@ -11,9 +11,7 @@ public class FalseGuard extends Guard{
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof FalseGuard)
-            return true;
-        return false;
+        return o instanceof FalseGuard;
     }
 
     @Override

@@ -1,9 +1,7 @@
 package models;
 
-import lib.CDDLib;
 import lib.DBMLib;
 
-import models.Relation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,7 +66,7 @@ public class Zone {
     }
 
     public void buildConstraintsForNormalGuard(ClockGuard g, List<Clock> clocks) {
-        int index = getIndexOfClock(g.getClock_i(),clocks);
+        int index = getIndexOfClock(g.getClock(),clocks);
         Relation rel = g.getRelation();
         int lowerBoundI = g.getLowerBound();
         int upperBoundI = g.getUpperBound();
@@ -76,10 +74,6 @@ public class Zone {
             case EQUAL: {
                 constrain1(0, index, (-1) * lowerBoundI, false);
                 constrain1(index, 0, upperBoundI, false);
-                break;
-            }
-            case NOT_EQUAL: {
-                // TODO: Zones cannot do a non equal, we would need Federations for that
                 break;
             }
             case LESS_THAN: {
@@ -103,8 +97,8 @@ public class Zone {
 
     public void buildConstraintsForDiagonalConstraint(ClockGuard dc, List<Clock> clocks) {
         Relation rel = dc.getRelation();
-        Clock clock_i = dc.getClock_i();
-        Clock clock_j = dc.getClock_j();
+        Clock clock_i = dc.getClock();
+        Clock clock_j = dc.getDiagonalClock();
         int val = dc.getBound();
 
         int i= getIndexOfClock(clock_i,clocks);
