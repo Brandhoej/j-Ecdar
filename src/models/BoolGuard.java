@@ -68,7 +68,7 @@ public class BoolGuard extends Guard {
 
     @Override
     public String toString() {
-        return "(" + var.getOriginalName() + relation.toString() + value + ')';
+        return "(" + var.getOriginalName() + relation.toString() + value + ")";
     }
 
     @Override

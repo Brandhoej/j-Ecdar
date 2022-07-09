@@ -13,6 +13,27 @@ public class OrGuard extends Guard {
     public OrGuard(List<Guard> guards) {
         this.guards = guards;
 
+        /* If any of the guards are OrGuards themselves,
+         *   then we can decompose their guards to be contained in this */
+        List<OrGuard> worklist = this.guards
+                .stream()
+                .filter(guard -> guard instanceof OrGuard)
+                .map(guard -> (OrGuard) guard)
+                .collect(Collectors.toList());
+        while (!worklist.isEmpty()) {
+            OrGuard current = worklist.get(0);
+            worklist.remove(0);
+
+            for (Guard guard : current.guards) {
+                if (guard instanceof OrGuard) {
+                    worklist.add((OrGuard) guard);
+                }
+                this.guards.add(guard);
+            }
+
+            this.guards.remove(current);
+        }
+
         // Remove all guards if there is a true guard
         boolean hasTrueGuard = this.guards.stream().anyMatch(guard -> guard instanceof TrueGuard);
         if (hasTrueGuard) {
@@ -89,6 +110,10 @@ public class OrGuard extends Guard {
 
     @Override
     public String toString() {
+        if (guards.size() == 1) {
+            return guards.get(0).toString();
+        }
+
         return "(" +
                 guards.stream()
                     .map(Guard::toString)

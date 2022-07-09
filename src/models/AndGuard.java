@@ -12,6 +12,27 @@ public class AndGuard extends Guard {
     public AndGuard(List<Guard> guards) {
         this.guards = guards;
 
+        /* If any of the guards are AndGuards themselves,
+         *   then we can decompose their guards to be contained in this */
+        List<AndGuard> worklist = this.guards
+                .stream()
+                .filter(guard -> guard instanceof AndGuard)
+                .map(guard -> (AndGuard) guard)
+                .collect(Collectors.toList());
+        while (!worklist.isEmpty()) {
+            AndGuard current = worklist.get(0);
+            worklist.remove(0);
+
+            for (Guard guard : current.guards) {
+                if (guard instanceof AndGuard) {
+                    worklist.add((AndGuard) guard);
+                }
+                this.guards.add(guard);
+            }
+
+            this.guards.remove(current);
+        }
+
         /* If the AndGuard contains a FalseGuard,
          *   then remove all guards and just have a single
          *   FalseGuard as it will always be false. */
@@ -90,6 +111,10 @@ public class AndGuard extends Guard {
 
     @Override
     public String toString() {
+        if (guards.size() == 1) {
+            return guards.get(0).toString();
+        }
+
         return "(" +
                 guards.stream().map(Guard::toString).collect(Collectors.joining(" && "))
                 + ")";
@@ -97,6 +122,6 @@ public class AndGuard extends Guard {
 
     @Override
     public int hashCode() {
-        return Objects.hash(false);
+        return Objects.hash(guards);
     }
 }
