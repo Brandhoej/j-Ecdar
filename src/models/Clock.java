@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import logic.TransitionSystem;
 
-public class Clock extends UniqueNamed{
+public class Clock extends UniqueNamed {
 
     public Clock(String name, String ownerName) {
         this.uniqueName = name;
@@ -14,7 +14,7 @@ public class Clock extends UniqueNamed{
         this.ownerName = ownerName;
     }
 
-    public Clock(Clock copy){
+    public Clock(Clock copy) {
         this.uniqueName = copy.originalName;
         this.originalName = copy.originalName;
         this.ownerName = copy.ownerName;

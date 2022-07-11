@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class ClockGuard extends Guard {
     private final Clock clock, diagonalClock;
-    private int bound;
-    private Relation relation;
+    private final int bound;
+    private final Relation relation;
 
     public ClockGuard(Clock main, Clock secondary, int bound, Relation relation) throws IllegalArgumentException {
         if (main == null) {
@@ -97,6 +97,11 @@ public class ClockGuard extends Guard {
             return bound;
         }
         return 0;
+    }
+
+    @Override
+    Guard copy(List<Clock> newClocks, List<Clock> oldClocks, List<BoolVar> newBVs, List<BoolVar> oldBVs) {
+        return new ClockGuard(this, newClocks, oldClocks);
     }
 
     @Override

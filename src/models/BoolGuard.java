@@ -3,14 +3,6 @@ package models;
 import java.util.*;
 
 public class BoolGuard extends Guard {
-    public BoolVar getVar() {
-        return var;
-    }
-
-    public boolean getValue() {
-        return value;
-    }
-
     private final BoolVar var;
     private final Relation relation;
     private final boolean value;
@@ -35,6 +27,14 @@ public class BoolGuard extends Guard {
         this(newBVs.get(oldBVs.indexOf(copy.getVar())), copy.relation, copy.value);
     }
 
+    public BoolVar getVar() {
+        return var;
+    }
+
+    public boolean getValue() {
+        return value;
+    }
+
     public BoolGuard negate() {
         switch (relation) {
             case EQUAL:
@@ -48,6 +48,13 @@ public class BoolGuard extends Guard {
     @Override
     int getMaxConstant(Clock clock) {
         return 0;
+    }
+
+    @Override
+    Guard copy(List<Clock> newClocks, List<Clock> oldClocks, List<BoolVar> newBVs, List<BoolVar> oldBVs) {
+        return new BoolGuard(
+            this, newBVs, oldBVs
+        );
     }
 
     @Override

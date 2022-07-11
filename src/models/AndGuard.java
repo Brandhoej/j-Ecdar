@@ -65,22 +65,9 @@ public class AndGuard extends Guard {
 
     public AndGuard(AndGuard copy, List<Clock> newClocks, List<Clock> oldClocks, List<BoolVar> newBVs, List<BoolVar> oldBVs) {
         // As this is the copy-constructor we need to create new instances of the guards
-        this(copy.guards.stream().map(guard -> {
-            if (guard instanceof ClockGuard) {
-                return new ClockGuard((ClockGuard) guard, newClocks, oldClocks);
-            } else if (guard instanceof BoolGuard) {
-                return new BoolGuard((BoolGuard) guard, newBVs, oldBVs);
-            } else if (guard instanceof FalseGuard) {
-                return new FalseGuard();
-            } else if (guard instanceof TrueGuard) {
-                return new TrueGuard();
-            } else if (guard instanceof AndGuard) {
-                return new AndGuard((AndGuard) guard, newClocks, oldClocks, newBVs, oldBVs);
-            } else if (guard instanceof OrGuard) {
-                return new OrGuard((OrGuard) guard, newClocks, oldClocks, newBVs, oldBVs);
-            }
-            throw new ClassCastException("Could not find a castable class for the guard");
-        }).collect(Collectors.toList()));
+        this(copy.guards.stream().map(guard ->
+            guard.copy(newClocks, oldClocks, newBVs, oldBVs)
+        ).collect(Collectors.toList()));
     }
 
     public List<Guard> getGuards() {
@@ -94,6 +81,13 @@ public class AndGuard extends Guard {
             max = Math.max(max, guard.getMaxConstant(clock));
         }
         return max;
+    }
+
+    @Override
+    Guard copy(List<Clock> newClocks, List<Clock> oldClocks, List<BoolVar> newBVs, List<BoolVar> oldBVs) {
+        return new AndGuard(
+            this, newClocks, oldClocks, newBVs, oldBVs
+        );
     }
 
     @Override
