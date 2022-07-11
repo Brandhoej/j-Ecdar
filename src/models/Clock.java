@@ -1,13 +1,8 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import logic.TransitionSystem;
-
 public class Clock extends UniqueNamed {
-
     public Clock(String name, String ownerName) {
         this.uniqueName = name;
         this.originalName = name;
@@ -21,11 +16,18 @@ public class Clock extends UniqueNamed {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Clock clock = (Clock) o;
-        return Objects.equals(originalName, clock.originalName) && ownerName.equals(clock.ownerName);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof Clock)) {
+            return false;
+        }
+
+        Clock other = (Clock) obj;
+        return originalName.equals(other.originalName)
+                && ownerName.equals(other.ownerName);
     }
 
     @Override
