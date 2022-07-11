@@ -125,9 +125,9 @@ public class Federation {
 
     public boolean isUrgent() {
         for (Zone z : this.getZones()) {
-            for (int i = 1; i < z.getSize(); i++) {
+            for (int i = 1; i < z.getLength(); i++) {
                 int currLower = z.getDbm()[i];
-                int currUpper = z.getDbm()[z.getSize() * i];
+                int currUpper = z.getDbm()[z.getLength() * i];
                 if (DBMLib.dbm_addRawRaw(currLower, currUpper) != 1)
                     return false;
             }
@@ -139,8 +139,8 @@ public class Federation {
 
         for (Zone z : this.getZones()) {
             boolean indef = true;
-            for (int i = 1; i < z.getSize(); i++) {
-                int curr = z.getDbm()[z.getSize() * i];
+            for (int i = 1; i < z.getLength(); i++) {
+                int curr = z.getDbm()[z.getLength() * i];
                 if (curr < DBM_INF) indef = false;
             }
             if (indef == true)
@@ -250,8 +250,8 @@ public class Federation {
     }
 
     public static Federation dbmMinusDbm(Zone z1, Zone z2) {
-        if (z1.getSize() != z2.getSize()) throw new IllegalArgumentException("Zones must be of the same size");
+        if (z1.getLength() != z2.getLength()) throw new IllegalArgumentException("Zones must be of the same size");
 
-        return new Federation(DBMLib.dbm_minus_dbm(z1.getDbm(), z2.getDbm(), z1.getSize()));
+        return new Federation(DBMLib.dbm_minus_dbm(z1.getDbm(), z2.getDbm(), z1.getLength()));
     }
 }
