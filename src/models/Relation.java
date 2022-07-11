@@ -25,7 +25,7 @@ public enum Relation {
         return Arrays.stream(Relation.values())
                 .filter(relation -> relation.operator.equals(text))
                 .findFirst()
-                .get();
+                .orElse(null);
     }
 
     public String toString() {
