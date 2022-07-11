@@ -85,6 +85,16 @@ public class UniversityTest {
     }
 
     @Test
+    public void compositionOfAdminMachResIsConsistent() {
+        // consistency: (Administration || Machine || Researcher)
+        TransitionSystem transitionSystem = new Composition(getAdm(), getMachine(), getResearcher());
+
+        boolean consistent = transitionSystem.isLeastConsistent();
+
+        assertTrue(consistent);
+    }
+
+    @Test
     @Ignore // FIXME: Missing "university-universalSpec.xml"
     public void specIsUniversal() {
         // 1: refinement: machine || researcher || university <= spec
