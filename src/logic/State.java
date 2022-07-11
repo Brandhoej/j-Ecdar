@@ -101,7 +101,7 @@ public class State {
 
             Zone z = new Zone(extractResult.getDbm());
             CDD bddPart = extractResult.getBddPart();
-            Zone newZone = new Zone(DBMLib.dbm_close(z.getDbm(),z.getLength()));
+            Zone newZone = new Zone(DBMLib.dbm_close(z.getDbm(),z.getDimension()));
             newZone.extrapolateMaxBounds(bounds);
             CDD extrapolatedDBMCDD = CDD.allocateFromDbm(newZone.getDbm(),CDD.numClocks);
             CDD extrapolatedCDD = bddPart.conjunction(extrapolatedDBMCDD);
