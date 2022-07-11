@@ -1,6 +1,6 @@
 package models;
 
-public class BoolVal {
+public class BoolVal { // TODO: Later on make sure that states only store the values
     private BoolVar var;
     private boolean value;
 
@@ -31,8 +31,8 @@ public class BoolVal {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
+        if (this == obj) {
+            return true;
         }
         if (!(obj instanceof BoolVal)) {
             return false;

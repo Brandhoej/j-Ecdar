@@ -3,7 +3,6 @@ package models;
 import java.util.Objects;
 
 public class BoolVar extends UniqueNamed { // TODO: Later on make sure that states only store the values
-
     private boolean initialValue;
 
     public BoolVar(String name, String ownerName, boolean initialValue) {
@@ -29,13 +28,18 @@ public class BoolVar extends UniqueNamed { // TODO: Later on make sure that stat
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof BoolVar))
-            return false;
-        BoolVar other = (BoolVar) o;
-        if (other.getOriginalName().equals(originalName) && initialValue == other.initialValue && Objects.equals(ownerName, other.ownerName))
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
-        return false;
+        }
+        if (!(obj instanceof BoolVar)) {
+            return false;
+        }
+
+        BoolVar other = (BoolVar) obj;
+        return other.getOriginalName().equals(originalName)
+                && initialValue == other.initialValue
+                && Objects.equals(ownerName, other.ownerName);
 
     }
 
