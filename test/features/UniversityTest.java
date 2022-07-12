@@ -85,7 +85,6 @@ public class UniversityTest {
     }
 
     @Test
-    @Ignore // FIXME: Missing "university-universalSpec.xml"
     public void specIsUniversal() {
         // 1: refinement: machine || researcher || university <= spec
         // 2: refinement: machine || researcher <= spec \ university
@@ -320,7 +319,7 @@ public class UniversityTest {
     }
 
     @Test
-    @Ignore // FIXME: This test does not finish and thereby is ignored
+    @Ignore
     public void newQuotientTest1Automaton() {
         Composition composition = new Composition(getMachine(), getAdm());
         Quotient quotient = new Quotient(getSpec(), getResearcher());
@@ -371,7 +370,7 @@ public class UniversityTest {
     }
 
     @Test
-    @Ignore // FIXME: This test does not finish and thereby is ignored
+    @Ignore
     public void newQuotientTest4AAutomaton() {
         /* This test is similar to "newQuotientTest4A".
          *  But here we create a SimpleTransitionSystem for the Quotient,
@@ -401,7 +400,7 @@ public class UniversityTest {
     }
 
     @Test
-    @Ignore // FIXME: This test does not finish and thereby is ignored
+    @Ignore
     public void newQuotientTest4BAutomaton() {
         // refinement: machine || adm <= spec \ researcher
         Composition lhs = new Composition(getMachine(), getAdm());
@@ -426,7 +425,7 @@ public class UniversityTest {
     }
 
     @Test
-    @Ignore // FIXME: This test does not finish and thereby is ignored
+    @Ignore
     public void newQuotientTest4CAutomaton() {
         // refinement: researcher || adm <= spec \ machine
         Composition lhs = new Composition(getResearcher(), getAdm());
@@ -450,7 +449,7 @@ public class UniversityTest {
     }
 
     @Test
-    @Ignore // FIXME: This test does not finish and thereby is ignored
+    @Ignore
     public void newQuotientTest4DAutomaton() {
         // Refinement: researcher || adm <= spec \ machine
         Composition lhs = new Composition(getResearcher(), getAdm());
@@ -488,7 +487,6 @@ public class UniversityTest {
     }
 
     @Test
-    @Ignore // FIXME: This test does not finish and thereby is ignored
     public void newQuotientTest3() {
         // refinement: machine || researcher <= spec \ adm
         Composition lhs = new Composition(getMachine(), getResearcher());
