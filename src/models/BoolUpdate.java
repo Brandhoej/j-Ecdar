@@ -5,8 +5,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class BoolUpdate extends Update {
-
-    private final BoolVar bv; // dont need to know the value here
+    // dont need to know the value here
+    private final BoolVar bv;
     private final boolean value;
 
     public BoolUpdate(BoolVar bv, boolean value) {

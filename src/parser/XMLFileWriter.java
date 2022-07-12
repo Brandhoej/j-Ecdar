@@ -200,7 +200,7 @@ public class XMLFileWriter {
             aut.addContent(loc);
         }
         Element init = new Element("init");
-        init.setAttribute("ref",automaton.getInitLoc().getName());
+        init.setAttribute("ref",automaton.getInitial().getName());
         aut.addContent(init);
         for (Edge e : automaton.getEdges())
         {

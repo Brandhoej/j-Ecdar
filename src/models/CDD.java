@@ -18,28 +18,24 @@ public class CDD {
     public static int numBools;
     public static int bddStartLevel;
 
-    public static boolean isCddIsRunning() {
-        return cddIsRunning;
-    }
-
     static boolean cddIsRunning;
     private static List<Clock> clocks = new ArrayList<>();
     public static List<BoolVar> BVs = new ArrayList<>();
-
 
     public CDD() {
         checkIfRunning();
         this.pointer = CDDLib.allocateCdd();
     }
 
-
     public CDD(long pointer) {
         this.pointer = pointer;
     }
 
+    public static boolean isCddIsRunning() {
+        return cddIsRunning;
+    }
 
     public static int getIndexOfClock(Clock clock) {
-
         for (int i = 0; i < clocks.size(); i++) {
             if (clock.hashCode() == clocks.get(i).hashCode()) return i + 1;
         }
@@ -49,7 +45,6 @@ public class CDD {
     }
 
     public static int getIndexOfBV(BoolVar bv) {
-
         for (int i = 0; i < BVs.size(); i++) {
             if (bv.equals(BVs.get(i))) return i;
         }
@@ -133,7 +128,6 @@ public class CDD {
     }
 
     public static Guard toBoolGuards(CDD bdd) {
-
         if (bdd.isFalse()) {
             return new FalseGuard();
         }
@@ -145,7 +139,6 @@ public class CDD {
         long ptr = bdd.getPointer();
         BDDArrays arrays = new BDDArrays(CDDLib.bddToArray(ptr, numBools));
 
-
         List<Guard> orParts = new ArrayList<>();
         for (int i = 0; i < arrays.traceCount; i++) {
             List<Guard> andParts = new ArrayList<>();
@@ -154,7 +147,7 @@ public class CDD {
                 int index = arrays.getVariables().get(i).get(j);
                 if (index >= 0) {
                     BoolVar var = BVs.get(index - bddStartLevel);
-                    boolean val = (arrays.getValues().get(i).get(j) == 1) ? true : false;
+                    boolean val = arrays.getValues().get(i).get(j) == 1;
                     BoolGuard bg = new BoolGuard(var, "==", val);
                     andParts.add(bg);
                 }
@@ -173,7 +166,6 @@ public class CDD {
         return CDD.toGuardList(this, clocks).toString();
     }
 
-
     public long getPointer() {
         return pointer;
     }
@@ -182,7 +174,6 @@ public class CDD {
         checkIfRunning();
         return new CDD(CDDLib.cddTrue());
     }
-
 
     public boolean isTerminal() {
         checkIfRunning();
@@ -214,7 +205,6 @@ public class CDD {
     public boolean isTrue() {
         return CDDLib.cddEquiv(this.pointer, cddTrue().pointer);
     }
-
 
     public boolean equiv(CDD that) {
         return CDDLib.cddEquiv(this.pointer, that.pointer);
@@ -507,7 +497,6 @@ public class CDD {
         return Objects.hash(pointer);
     }
 
-
     public static CDD predt(CDD A, CDD B) {
         checkIfRunning();
         A.checkForNull();
@@ -564,20 +553,14 @@ public class CDD {
         return fed;
     }
 
-    public static boolean isSubset(CDD A, CDD B) { // A (= B
-//        System.out.println("A : " + CDD.toGuardList(A,clocks));
-//        System.out.println("B : " + CDD.toGuardList(B,clocks));
-//        System.out.println("A & B : " + CDD.toGuardList(A.conjunction(B),clocks));
-//        System.out.println("A & B = A: " + (A.conjunction(B).equiv(A)));
-        if ((A.conjunction(B).equiv(A))) // TODO: check if correct
-            return true;
-        else return false;
+    public static boolean isSubset(CDD A, CDD B) {
+        // TODO: check if correct
+        return A.conjunction(B).equiv(A);
     }
 
     public boolean isUnrestrained() {
-        if (this.equiv(cddTrue().removeNegative())) // TODO: check if correct
-            return true;
-        else return false;
+        // TODO: check if correct
+        return this.equiv(cddTrue().removeNegative());
     }
 
     public static CDD getUnrestrainedCDD() {
@@ -615,10 +598,8 @@ public class CDD {
             }
         }
 
-
         return this.transition(e.getGuardCDD(), clockResets, clockValues, boolResets, boolValues).removeNegative().reduce();
     }
-
 
     public CDD transitionBack(Edge e) {
         if (e.getUpdates().size() == 0) {
@@ -631,28 +612,23 @@ public class CDD {
             if (up instanceof BoolUpdate) numBools++;
         }
         int[] clockResets = new int[numClocks];
-        int[] clockValues = new int[numClocks];
         int[] boolResets = new int[numBools];
-        int[] boolValues = new int[numBools];
         int cl = 0;
         int bl = 0;
         for (Update up : e.getUpdates()) {
             if (up instanceof ClockUpdate) {
                 ClockUpdate u = (ClockUpdate) up;
                 clockResets[cl] = getIndexOfClock(u.getClock());
-                clockValues[cl] = u.getValue();
                 cl++;
             }
             if (up instanceof BoolUpdate) {
                 BoolUpdate u = (BoolUpdate) up;
                 boolResets[bl] = bddStartLevel + getIndexOfBV(u.getBV());
-                boolValues[bl] = u.getValue() ? 1 : 0;
                 bl++;
             }
         }
         return this.transitionBack(e.getGuardCDD(), turnUpdatesToCDD(e.getUpdates()), clockResets, boolResets).removeNegative().reduce();
     }
-
 
     public static CDD turnUpdatesToCDD(List<Update> updates) {
         CDD res = cddTrue();
@@ -670,7 +646,6 @@ public class CDD {
         return res.removeNegative().reduce();
     }
 
-
     public CDD transitionBack(Move e) {
         // TODO: check that this is up to date compared to the othter TransitionBack
         if (e.getUpdates().size() == 0) {
@@ -683,26 +658,21 @@ public class CDD {
             if (up instanceof BoolUpdate) numBools++;
         }
         int[] clockResets = new int[numClocks];
-        int[] clockValues = new int[numClocks];
         int[] boolResets = new int[numBools];
-        int[] boolValues = new int[numBools];
         int cl = 0;
         int bl = 0;
         for (Update up : e.getUpdates()) {
             if (up instanceof ClockUpdate) {
                 ClockUpdate u = (ClockUpdate) up;
                 clockResets[cl] = getIndexOfClock(u.getClock());
-                clockValues[cl] = u.getValue();
                 cl++;
             }
             if (up instanceof BoolUpdate) {
                 BoolUpdate u = (BoolUpdate) up;
                 boolResets[bl] = bddStartLevel + getIndexOfBV(u.getBV());
-                boolValues[bl] = u.getValue() ? 1 : 0;
                 bl++;
             }
         }
         return this.transitionBack(e.getGuardCDD(), turnUpdatesToCDD(e.getUpdates()), clockResets, boolResets).removeNegative().reduce();
     }
-
 }
