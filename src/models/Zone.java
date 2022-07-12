@@ -37,7 +37,8 @@ public class Zone {
     }
 
     private static int getIndexOfClock(Clock clock, List<Clock> clocks) {
-        return clocks.indexOf(clock);
+        int index = clocks.indexOf(clock);
+        return index == -1 ? 0 : index + 1;
     }
 
     public boolean isEmpty() {
