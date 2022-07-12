@@ -19,7 +19,7 @@ public class Federation {
 
     public Federation(List<Zone> zones) {
         this.zones = zones.stream()
-            .map(Zone::new).collect(Collectors.toList());
+                .map(Zone::new).collect(Collectors.toList());
     }
 
     public Federation(Zone zone) {
@@ -48,7 +48,7 @@ public class Federation {
         return new Federation(zones);
     }
 
-    public Guard turnFederationToGuards(List<Clock> clocks) {
+    public Guard toGuards(List<Clock> clocks) {
         List<Guard> turnedBackIntoGuards = new ArrayList<>();
         for (Zone zone : getZones()) {
             turnedBackIntoGuards.add(zone.buildGuardsFromZone(clocks, clocks));
@@ -57,7 +57,7 @@ public class Federation {
     }
 
     public boolean isUnrestrained(List<Clock> clocks) {
-        return Federation.fedMinusFed(Federation.createUnrestrainedFederation(clocks), this).isEmpty();
+        return Federation.subtract(Federation.createUnrestrainedFederation(clocks), this).isEmpty();
     }
 
     public Federation down() {
@@ -76,9 +76,9 @@ public class Federation {
 
     public boolean isSubset(Federation other) {
         int[][] zones1 = this.getZones().stream()
-            .map(Zone::getDbm).toArray(int[][]::new);
+                .map(Zone::getDbm).toArray(int[][]::new);
         int[][] zones2 = other.getZones().stream()
-            .map(Zone::getDbm).toArray(int[][]::new);
+                .map(Zone::getDbm).toArray(int[][]::new);
 
         if (zones1.length == 0) {
             return true;
@@ -159,7 +159,7 @@ public class Federation {
         return new Federation(emptyZone);
     }
 
-    public static Federation fedMinusFed(Federation fed1, Federation fed2) {
+    public static Federation subtract(Federation fed1, Federation fed2) {
         int[][] zones1 = fed1.getDbms();
         int[][] zones2 = fed2.getDbms();
 
@@ -172,7 +172,7 @@ public class Federation {
         return new Federation(result);
     }
 
-    public static boolean fedEqFed(Federation fed1, Federation fed2) {
+    public static boolean equals(Federation fed1, Federation fed2) {
         if (fed1 == null && fed2 == null) return true;
         if (fed1 == null || fed2 == null) return false;
 
@@ -187,7 +187,7 @@ public class Federation {
         return DBMLib.fed_eq_fed(zones1, zones2, dimension);
     }
 
-    public static Federation fedPlusFed(Federation fed1, Federation fed2) {
+    public static Federation add(Federation fed1, Federation fed2) {
         int[][] zones1 = fed1.getDbms();
         int[][] zones2 = fed2.getDbms();
         if (fed1.isEmpty())
@@ -215,8 +215,8 @@ public class Federation {
         return new Federation(result);
     }
 
-    public static Federation dbmMinusDbm(Zone z1, Zone z2)
-        throws IllegalArgumentException {
+    public static Federation subtract(Zone z1, Zone z2)
+            throws IllegalArgumentException {
         if (z1.getDimension() != z2.getDimension()) {
             throw new IllegalArgumentException("Zones must be of the same size");
         }

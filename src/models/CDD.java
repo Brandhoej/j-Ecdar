@@ -147,11 +147,11 @@ public class CDD {
 
 
         List<Guard> orParts = new ArrayList<>();
-        for (int i = 0; i < arrays.numTraces; i++) {
+        for (int i = 0; i < arrays.traceCount; i++) {
             List<Guard> andParts = new ArrayList<>();
-            for (int j = 0; j < arrays.numBools; j++) {
+            for (int j = 0; j < arrays.booleanCount; j++) {
 
-                int index = arrays.getVars().get(i).get(j);
+                int index = arrays.getVariables().get(i).get(j);
                 if (index >= 0) {
                     BoolVar var = BVs.get(index - bddStartLevel);
                     boolean val = (arrays.getValues().get(i).get(j) == 1) ? true : false;

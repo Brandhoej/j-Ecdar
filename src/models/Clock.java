@@ -2,7 +2,7 @@ package models;
 
 import java.util.Objects;
 
-public class Clock extends UniqueNamed {
+public class Clock extends UniquelyNamed {
     public Clock(String name, String ownerName) {
         this.uniqueName = name;
         this.originalName = name;
@@ -43,7 +43,7 @@ public class Clock extends UniqueNamed {
     }
 
     @Override
-    public UniqueNamed getCopy() {
+    public UniquelyNamed getCopy() {
         return new Clock(this);
     }
 }

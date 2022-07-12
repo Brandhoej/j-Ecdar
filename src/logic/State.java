@@ -161,7 +161,7 @@ public class State {
                         System.out.print(i + " ");
                     System.out.println();
                 }
-                z.extrapolateMaxBoundsDiag(bounds);
+                z.extrapolateMaxBoundsDiagonal(bounds);
                 if (print) z.prettyPrint(true,true);
                 CDD extrapolatedDBMCDD = CDD.allocateFromDbm(z.getDbm(),CDD.numClocks);
                 CDD extrapolatedCDD = bddPart.conjunction(extrapolatedDBMCDD);

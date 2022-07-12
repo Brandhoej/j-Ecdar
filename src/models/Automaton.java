@@ -98,11 +98,11 @@ public class Automaton {
         for (Clock clock : clocks) {
             for (Edge edge : edges) {
                 result.compute(
-                    clock,
-                    (key, value) -> {
-                        int clockMaxBound = edge.getMaxConstant(clock);
-                        return Math.max(value == null ? clockMaxBound : value, clockMaxBound);
-                    }
+                        clock,
+                        (key, value) -> {
+                            int clockMaxBound = edge.getMaxConstant(clock);
+                            return Math.max(value == null ? clockMaxBound : value, clockMaxBound);
+                        }
                 );
             }
 

@@ -28,8 +28,8 @@ public class Move {
         CDD targetInvariant = getTarget().getInvariantCDD();
         CDD sourceInvariant = getSource().getInvariantCDD();
         return getGuardCDD()
-            .conjunction(targetInvariant.transitionBack(this))
-            .conjunction(sourceInvariant);
+                .conjunction(targetInvariant.transitionBack(this))
+                .conjunction(sourceInvariant);
     }
 
     public void conjunctCDD(CDD cdd) {

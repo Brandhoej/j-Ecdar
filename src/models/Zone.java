@@ -128,7 +128,7 @@ public class Zone {
         dbm = DBMLib.dbm_extrapolateMaxBounds(dbm, dimension, maxBounds);
     }
 
-    public void extrapolateMaxBoundsDiag(int[] maxBounds) {
+    public void extrapolateMaxBoundsDiagonal(int[] maxBounds) {
         dbm = DBMLib.dbm_extrapolateMaxBoundsDiag(dbm, dimension, maxBounds);
     }
 
@@ -203,7 +203,7 @@ public class Zone {
 
             if (upper == lower && !DBMLib.dbm_rawIsStrict(lower) && !DBMLib.dbm_rawIsStrict(upper)) {
                 guards.add(
-                    new ClockGuard(clock, (-1) * DBMLib.raw2bound(lower), Relation.EQUAL)
+                        new ClockGuard(clock, (-1) * DBMLib.raw2bound(lower), Relation.EQUAL)
                 );
                 continue;
             }
@@ -212,11 +212,11 @@ public class Zone {
             if (lower != 1) {
                 if (DBMLib.dbm_rawIsStrict(lower)) {
                     guards.add(
-                        new ClockGuard(clock, (-1) * DBMLib.raw2bound(lower), Relation.GREATER_THAN)
+                            new ClockGuard(clock, (-1) * DBMLib.raw2bound(lower), Relation.GREATER_THAN)
                     );
                 } else {
                     guards.add(
-                        new ClockGuard(clock, (-1) * DBMLib.raw2bound(lower), Relation.GREATER_EQUAL)
+                            new ClockGuard(clock, (-1) * DBMLib.raw2bound(lower), Relation.GREATER_EQUAL)
                     );
                 }
             }
@@ -225,11 +225,11 @@ public class Zone {
             if (upper != DBM_INF) {
                 if (DBMLib.dbm_rawIsStrict(upper)) {
                     guards.add(
-                        new ClockGuard(clock, DBMLib.raw2bound(upper), Relation.LESS_THAN)
+                            new ClockGuard(clock, DBMLib.raw2bound(upper), Relation.LESS_THAN)
                     );
                 } else {
                     guards.add(
-                        new ClockGuard(clock, DBMLib.raw2bound(upper), Relation.LESS_EQUAL)
+                            new ClockGuard(clock, DBMLib.raw2bound(upper), Relation.LESS_EQUAL)
                     );
                 }
 
@@ -262,11 +262,11 @@ public class Zone {
 
                 if (DBMLib.dbm_rawIsStrict(currentValue)) {
                     guards.add(
-                        new ClockGuard(clock_j, clock_i, DBMLib.raw2bound(currentValue), Relation.LESS_THAN)
+                            new ClockGuard(clock_j, clock_i, DBMLib.raw2bound(currentValue), Relation.LESS_THAN)
                     );
                 } else {
                     guards.add(
-                        new ClockGuard(clock_j, clock_i, DBMLib.raw2bound(currentValue), Relation.LESS_EQUAL)
+                            new ClockGuard(clock_j, clock_i, DBMLib.raw2bound(currentValue), Relation.LESS_EQUAL)
                     );
                 }
 

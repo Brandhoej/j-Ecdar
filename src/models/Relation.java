@@ -18,7 +18,7 @@ public enum Relation {
     }
 
     public static Relation fromString(String text)
-        throws IllegalArgumentException, NoSuchElementException {
+            throws IllegalArgumentException, NoSuchElementException {
         if (text == null) {
             throw new IllegalArgumentException("Cannot convert null string to relation");
         }

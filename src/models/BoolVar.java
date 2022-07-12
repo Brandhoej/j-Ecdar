@@ -2,7 +2,7 @@ package models;
 
 import java.util.Objects;
 
-public class BoolVar extends UniqueNamed { // TODO: Later on make sure that states only store the values
+public class BoolVar extends UniquelyNamed { // TODO: Later on make sure that states only store the values
     private boolean initialValue;
 
     public BoolVar(String name, String ownerName, boolean initialValue) {
@@ -48,7 +48,7 @@ public class BoolVar extends UniqueNamed { // TODO: Later on make sure that stat
     }
 
     @Override
-    public UniqueNamed getCopy() {
+    public UniquelyNamed getCopy() {
         return new BoolVar(this);
     }
 }
