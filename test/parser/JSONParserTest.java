@@ -1,12 +1,9 @@
 package parser;
 
-import logic.JsonAutomatonEncoder;
-import logic.Pruning;
 import logic.Refinement;
 import logic.SimpleTransitionSystem;
 import models.*;
 import org.json.simple.parser.ParseException;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

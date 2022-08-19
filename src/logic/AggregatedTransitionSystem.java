@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 public abstract class AggregatedTransitionSystem extends TransitionSystem {
     protected final TransitionSystem[] systems;
     private final HashMap<Clock, Integer> maxBounds = new HashMap<>();
-
     private final HashSet<State> passed = new HashSet<>();
     private final Queue<State> worklist = new ArrayDeque<>();
 
@@ -44,8 +43,8 @@ public abstract class AggregatedTransitionSystem extends TransitionSystem {
     }
 
     @Override
-    public SymbolicLocation getInitialLocation() {
-        return getInitialLocation(systems);
+    public Location getInitialLocation() {
+        return getInitialLocation(systems, false);
     }
 
     @Override
@@ -84,20 +83,19 @@ public abstract class AggregatedTransitionSystem extends TransitionSystem {
     }
 
     @Override
-    public List<Move> getNextMoves(SymbolicLocation location, Channel channel) {
+    public List<Move> getNextMoves(Location location, Channel channel) {
         // Check if action belongs to this transition system at all before proceeding
         if (!getOutputs().contains(channel) && !getInputs().contains(channel)) {
             return new ArrayList<>();
         }
 
         // Check that the location is ComplexLocation
-        if (!(location instanceof ComplexLocation)) {
+        if (!location.isProduct()) {
             throw new IllegalArgumentException(
-                    "The location type must be ComplexLocation as aggregated transition systems requires multiple locations"
+                    "The location type must be composed of other Locations as aggregated transition systems requires multiple locations"
             );
         }
-        ComplexLocation complexLocation = (ComplexLocation) location;
-        List<SymbolicLocation> locations = complexLocation.getLocations();
+        List<Location> locations = location.getProduct();
 
         /* Check that the complex locations size is the same as the systems
          * This is because the index of the system,
@@ -112,7 +110,7 @@ public abstract class AggregatedTransitionSystem extends TransitionSystem {
         return computeResultMoves(locations, channel);
     }
 
-    protected abstract List<Move> computeResultMoves(List<SymbolicLocation> locations, Channel channel);
+    protected abstract List<Move> computeResultMoves(List<Location> locations, Channel channel);
 
     protected List<TransitionSystem> getRootSystems() {
         return Arrays.asList(systems);
@@ -137,7 +135,7 @@ public abstract class AggregatedTransitionSystem extends TransitionSystem {
     }
 
     private Automaton aggregate(Automaton[] automata) {
-        boolean initialisedCdd = CDD.tryInit(getClocks(), BVs.getItems());
+        boolean initialisedCdd = CDD.tryInit(clocks.getItems(), BVs.getItems());
 
         String name = getName();
 
@@ -149,7 +147,7 @@ public abstract class AggregatedTransitionSystem extends TransitionSystem {
         for (Automaton aut : automata) {
             initials.add(aut.getInitial());
         }
-        Location initial = new Location(initials);
+        Location initial = Location.createProduct(initials);
         locations.add(initial);
         locationMap.put(initial.getName(), initial);
 

@@ -1,7 +1,7 @@
 package logic.query;
 
 import logic.Controller;
-import logic.Pruning;
+import logic.Pruner;
 import logic.SimpleTransitionSystem;
 import models.Automaton;
 
@@ -14,7 +14,7 @@ public class PruneQuery extends Query{
     public void handle() {
         Automaton aut = getSystem1().getAutomaton();
 
-        SimpleTransitionSystem simp = Pruning.adversarialPruning(new SimpleTransitionSystem(aut));
+        SimpleTransitionSystem simp = Pruner.adversarialPruning(new SimpleTransitionSystem(aut));
         aut = simp.pruneReachTimed().getAutomaton();
 
         Controller.saveAutomaton(aut, getComponentName());

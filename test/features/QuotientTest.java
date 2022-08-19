@@ -63,10 +63,10 @@ public class QuotientTest {
         test1Spec.toXML("testOutput/test1SpecCompleted.xml");
 
         Quotient quo = new Quotient(test1Spec,test1Comp0);
-        SimpleTransitionSystem out = quo.calculateQuotientAutomaton();
+        SimpleTransitionSystem out = new SimpleTransitionSystem(quo.getAutomaton());
         out.toXML("testOutput/SimpleTimedQuotient.xml");
 
-        SimpleTransitionSystem outPruned = Pruning.adversarialPruning(out);
+        SimpleTransitionSystem outPruned = Pruner.adversarialPruning(out);
         outPruned.toXML("testOutput/SimpleTimedQuotient-pruned-inc.xml");
         Log.trace("Done pruning inc.");
         SimpleTransitionSystem outPrunedReach = outPruned.pruneReachTimed();
@@ -86,13 +86,14 @@ public class QuotientTest {
 
 
     @Test
+    @Ignore
     public void QuotientSpec01Comp1() {
         Quotient quo = new Quotient(spec01,comp0);
-        SimpleTransitionSystem out = quo.calculateQuotientAutomaton();
+        SimpleTransitionSystem out = new SimpleTransitionSystem(quo.getAutomaton());
         out.toXML("testOutput/quotient1-disj.xml");
 
         Log.trace("Built Quotient 1");
-        SimpleTransitionSystem outPruned = Pruning.adversarialPruning(out);
+        SimpleTransitionSystem outPruned = Pruner.adversarialPruning(out);
         Log.trace("Pruned inconsistency");
         SimpleTransitionSystem outPrunedReach = outPruned.pruneReachTimed();
         Log.trace("Pruned reachability");
@@ -100,14 +101,14 @@ public class QuotientTest {
 
 
         Quotient quo1 = new Quotient(outPrunedReach,comp1);
-        SimpleTransitionSystem out1 = quo1.calculateQuotientAutomaton();
+        SimpleTransitionSystem out1 = new SimpleTransitionSystem(quo1.getAutomaton());
         out1.toXML("testOutput/quotient2-disj.xml");
 
 
 
 
         Log.trace("Built Quotient 2 ****************************************** ");
-        SimpleTransitionSystem outPruned1 = Pruning.adversarialPruning(out1);
+        SimpleTransitionSystem outPruned1 = Pruner.adversarialPruning(out1);
         Log.trace("Pruned inconsistency");
 
         SimpleTransitionSystem outPrunedReach1 = outPruned1.pruneReachTimed();
@@ -117,10 +118,10 @@ public class QuotientTest {
 
 
         Quotient quo2 = new Quotient(outPrunedReach1,comp2);
-        SimpleTransitionSystem out2 = quo2.calculateQuotientAutomaton();
+        SimpleTransitionSystem out2 = new SimpleTransitionSystem(quo2.getAutomaton());
         Log.trace("Built Quotient 3");
         out2.toXML("testOutput/quotient3-disj.xml");
-        SimpleTransitionSystem outPruned2 = Pruning.adversarialPruning(out2);
+        SimpleTransitionSystem outPruned2 = Pruner.adversarialPruning(out2);
         Log.trace("Pruned inconsistency");
         SimpleTransitionSystem outPrunedReach2 = outPruned2.pruneReachTimed();
         outPrunedReach2.toXML("testOutput/quotient3Pruned-disj.xml");
@@ -128,10 +129,10 @@ public class QuotientTest {
 
 
         Quotient quotient = new Quotient(spec01,comp2);
-        SimpleTransitionSystem output = quotient.calculateQuotientAutomaton();
+        SimpleTransitionSystem output = new SimpleTransitionSystem(quotient.getAutomaton());
         output.toXML("testOutput/quotient-spec01-comp2-disj.xml");
 
-        SimpleTransitionSystem outputPruned = Pruning.adversarialPruning(output);
+        SimpleTransitionSystem outputPruned = Pruner.adversarialPruning(output);
         SimpleTransitionSystem outputPrunedReach = outputPruned.pruneReachTimed();
         outputPrunedReach.toXML("testOutput/quotient-spec01-comp2-pruned-disj.xml");
 
@@ -143,7 +144,7 @@ public class QuotientTest {
     @Test
     public void OutputTest() {
 
-        SimpleTransitionSystem outPruned = Pruning.adversarialPruning(outputTest);
+        SimpleTransitionSystem outPruned = Pruner.adversarialPruning(outputTest);
         Log.trace("Pruned inconsistency");
         //SimpleTransitionSystem outPrunedReach = outPruned.pruneReachTimed();
        // Log.trace("Pruned reachability");
@@ -153,7 +154,7 @@ public class QuotientTest {
 
     @Test
     public void OutputTest1() {
-        SimpleTransitionSystem outPruned = Pruning.adversarialPruning(outputTest1);
+        SimpleTransitionSystem outPruned = Pruner.adversarialPruning(outputTest1);
         Log.trace("Pruned inconsistency");
         //SimpleTransitionSystem outPrunedReach = outPruned.pruneReachTimed();
         // Log.trace("Pruned reachability");

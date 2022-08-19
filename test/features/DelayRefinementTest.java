@@ -1,13 +1,11 @@
 package features;
 
 import log.Log;
+import log.Urgency;
 import logic.*;
 import models.Automaton;
 import models.CDD;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import parser.XMLFileWriter;
 import parser.XMLParser;
 
@@ -328,9 +326,8 @@ public class DelayRefinementTest {
         SimpleTransitionSystem Z2_1 = new SimpleTransitionSystem(automata[47]);
         assertTrue(new Refinement(new Conjunction(Z2_1,Z3), Z2).check());
         Quotient q = new Quotient(Z2,Z3);
-        Refinement ref = new Refinement(Z2_1,  new SimpleTransitionSystem(q.getAutomaton()));
+        Refinement ref = new Refinement(Z2_1,  q);
 
-        XMLFileWriter.toXML("testOutput/quotientz2_z3.xml",new SimpleTransitionSystem(q.getAutomaton()));
         boolean res = ref.check(true);
         System.out.println("inputs:");
         System.out.println(Z2_1.getInputs());
@@ -375,10 +372,9 @@ public class DelayRefinementTest {
     @Test
     public void T1T2RefinesT3() { // TODO: T2 is not consistent...... see test before
         TransitionSystem comp = new Composition(
-                new TransitionSystem[]{
-                        new SimpleTransitionSystem((automata[0])),
-                        new SimpleTransitionSystem((automata[1]))});
-       Automaton array[] = new Automaton[]{comp.getAutomaton()};
+                new SimpleTransitionSystem((automata[0])),
+                new SimpleTransitionSystem((automata[1])));
+       Automaton[] array = new Automaton[]{comp.getAutomaton()};
         XMLFileWriter.toXML("testOutput/compT1T2.xml", array);
         assertTrue(new Refinement(comp, new SimpleTransitionSystem((automata[2]))).check());
     }
@@ -404,10 +400,9 @@ public class DelayRefinementTest {
     @Test
     public void T0T1T2RefinesT3() {
         TransitionSystem comp = new Composition(
-                new TransitionSystem[]{
-                        new SimpleTransitionSystem(automata[11]),
-                        new SimpleTransitionSystem(automata[0]),
-                        new SimpleTransitionSystem(automata[1])});
+                new SimpleTransitionSystem(automata[11]),
+                new SimpleTransitionSystem(automata[0]),
+                new SimpleTransitionSystem(automata[1]));
         assertTrue(new Refinement(comp, new SimpleTransitionSystem(automata[2])).check());
     }
 

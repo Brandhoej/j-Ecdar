@@ -194,7 +194,7 @@ public class VariousTest {
         assertFalse(new Refinement(new Composition(A1,A2),B).check());
 
         // refinement: A2 <= (B \\ A1)
-        Refinement ref = new Refinement(A2, new SimpleTransitionSystem(new Quotient(B,A1).getAutomaton()));
+        Refinement ref = new Refinement(A2, new Quotient(B,A1));
         boolean res = ref.check();
         System.out.println(ref.getErrMsg());
         assertFalse(res);

@@ -512,24 +512,6 @@ public class BoolTest {
     }
 
     @Test
-    public void testBoolQuotient() // TODO: check and make an assert statement
-    {
-        CDD.done();
-        Automaton auts[] = XMLParser.parse("samples/xml/BoolQuotient.xml",true);
-        XMLFileWriter.toXML("testOutput/TInputEnabled.xml", new SimpleTransitionSystem(auts[0]));
-        System.out.println("PARSING COMPLETE");
-        Quotient q = new Quotient(new SimpleTransitionSystem(auts[1]),new SimpleTransitionSystem(auts[0]));
-        SimpleTransitionSystem sts = q.calculateQuotientAutomaton();
-        XMLFileWriter.toXML("testOutput/quotient_bool.xml",sts);
-
-        SimpleTransitionSystem sts1 = q.calculateQuotientAutomaton(true);
-        XMLFileWriter.toXML("testOutput/quotient_bool1.xml",sts1);
-
-        Automaton finalAut = Bisimilarity.checkBisimilarity(sts1.getAutomaton());
-        XMLFileWriter.toXML("testOutput/bsimreducedQuotient.xml", new SimpleTransitionSystem(finalAut));
-    }
-
-    @Test
     public void testRefinementByNiels()
     {
         Automaton auts[] = XMLParser.parse("samples/xml/refinement_bool.xml",false);
@@ -690,7 +672,7 @@ public class BoolTest {
 
         Automaton aut = new Automaton("exp", locations, edges, clocks, bools,false);
         XMLFileWriter.toXML("testOutput/BoolAutomaton.xml",new Automaton[]{aut});
-        Automaton newAut = XMLParser.parse("testOutput/boolAutomaton.xml",false)[0];
+        Automaton newAut = XMLParser.parse("testOutput/BoolAutomaton.xml",false)[0];
         XMLFileWriter.toXML("testOutput/BoolAutomatonNew.xml",new Automaton[]{newAut});
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 

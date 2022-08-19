@@ -177,7 +177,7 @@ public class Refinement {
                 passed.put(locPair,pair);
 
             // assert(passedContainsStatePair(curr));
-            System.out.println("Picked state pair " + locPair.leftLocation.getName()+"-"+locPair.rightLocation.getName());
+            // System.out.println("Picked state pair (" + locPair.leftLocation.getName()+")-("+locPair.rightLocation.getName()+")");
             // check that for every delay in TS 1 there is a corresponding delay in TS
             boolean holds0 = checkDelay(left, right);
             if (!holds0) {
@@ -339,7 +339,8 @@ public class Refinement {
                 if (pair != null) {
                     pairFound = true;
 
-                    if (!pair.getRight().getLocation().getIsUniversal())
+                    // Any refinement with a suitable alphabet is possible in universal locations
+                    if (!pair.getRight().getLocation().isUniversal())
                     {
                         if (!waitingContainsStatePair(pair) && !passedContainsStatePair(pair)) {
                             if (pair.getRight().getLocation().getName().contains("inc"))
@@ -430,8 +431,8 @@ public class Refinement {
                     System.out.println("create pairs failed");
                     if (RET_REF)
                     {
-                        SymbolicLocation ll = new InconsistentLocation();
-                        SymbolicLocation rl = new InconsistentLocation();
+                        Location ll = Location.createInconsistentLocation();
+                        Location rl = Location.createInconsistentLocation();
                         StatePair refViolationStates = new StatePair(new State(ll,CDD.cddTrue()), new State(rl, CDD.cddTrue()));
                         currNode.constructSuccessor(refViolationStates, leaderEdges, followerEdges);
                     }
@@ -492,8 +493,8 @@ public class Refinement {
     }
 
     public StatePair getInitialStatePair() {
-        State left = ts1.getInitialState( ts2.getInitialLocation().getInvariant());
-        State right = ts2.getInitialState(ts1.getInitialLocation().getInvariant());
+        State left = ts1.getInitialState( ts2.getInitialLocation().getInvariantCDD());
+        State right = ts2.getInitialState(ts1.getInitialLocation().getInvariantCDD());
         return new StatePair(left, right);
     }
 

@@ -211,6 +211,18 @@ public class CDDTest {
         cdd.isNotFalse();
     }
 
+    @Test
+    public void cddEmptyConstructorDoesNotRequireCddInit() {
+        // prerequisites
+        assertFalse(CDD.isRunning());
+        // Arrange
+        CDD cdd;
+        // Act
+        cdd = new CDD();
+        // Assert
+        assertTrue(cdd.isNull());
+    }
+
     @Test(expected = NullPointerException.class)
     public void cddFreeingNullCDD() throws CddNotRunningException, CddAlreadyRunningException {
         CDD.init(100,100,100);

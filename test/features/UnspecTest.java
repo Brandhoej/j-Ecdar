@@ -63,6 +63,6 @@ public class UnspecTest {
     @Test
     public void compRefinesB() {
         // in the old test case, the refinement should fail because right side has more inputs, now it should pass
-        assertTrue(new Refinement(new Composition(new TransitionSystem[]{a, aa}), b).check());
+        assertTrue(new Refinement(new Composition(a, aa), b).check());
     }
 }

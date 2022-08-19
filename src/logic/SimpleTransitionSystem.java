@@ -33,8 +33,8 @@ public class SimpleTransitionSystem extends TransitionSystem{
         return automaton.getOutputAct();
     }
 
-    public SymbolicLocation getInitialLocation() {
-        return new SimpleLocation(automaton.getInitial());
+    public Location getInitialLocation() {
+        return new Location(automaton.getInitial());
     }
 
     public List<SimpleTransitionSystem> getSystems() {
@@ -299,14 +299,14 @@ public class SimpleTransitionSystem extends TransitionSystem{
         return createNewTransitions(currentState, moves, allClocks);
     }
 
-    protected List<Move> getNextMoves(SymbolicLocation symLocation, Channel channel) {
+    protected List<Move> getNextMoves(Location symLocation, Channel channel) {
         List<Move> moves = new ArrayList<>();
 
-        Location location = ((SimpleLocation) symLocation).getActualLocation();
+        Location location = ((Location) symLocation);
         List<Edge> edges = automaton.getEdgesFromLocationAndSignal(location, channel);
 
         for (Edge edge : edges) {
-            SymbolicLocation target = new SimpleLocation(edge.getTarget());
+            Location target = new Location(edge.getTarget());
             Move move = new Move(symLocation, target, Collections.singletonList(edge));
             moves.add(move);
         }
@@ -347,7 +347,7 @@ public class SimpleTransitionSystem extends TransitionSystem{
         while (!waiting.isEmpty()) {
             State currState = new State(waiting.pop());
             passed.add(new State(currState));
-            metLocations.add(((SimpleLocation) currState.getLocation()).getActualLocation());
+            metLocations.add(((Location) currState.getLocation()));
             for (Channel action : actions){
                 List<Transition> tempTrans = getNextTransitions(currState, action);
                 for (Transition t: tempTrans)
