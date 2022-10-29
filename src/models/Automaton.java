@@ -2,6 +2,8 @@ package models;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
+import log.Log;
+import log.Urgency;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,6 +21,35 @@ public class Automaton {
     public Automaton(String name, List<Location> locations, List<Edge> edges, List<Clock> clocks, List<BoolVar> BVs, boolean makeInputEnabled) {
         if (locations.isEmpty()) {
             throw new IllegalArgumentException(String.format("Automaton %s must have at least one location.", name));
+        }
+
+        List<Edge> edgesWithUnspecifiedLocations = new ArrayList<>();
+        List<String> edgesWithUnspecifiedLocationsMessages = new ArrayList<>();
+        for (Edge edge : edges) {
+            boolean missesSource = !locations.contains(edge.getSource());
+            boolean missesTarget = !locations.contains(edge.getTarget());
+
+            if (missesSource || missesTarget) {
+                edgesWithUnspecifiedLocations.add(edge);
+            }
+
+            if (missesSource && missesTarget) {
+                edgesWithUnspecifiedLocationsMessages.add(String.format("Edge %s -> %s uses unspecified source and target", edge.getSource().getName(), edge.getTarget().getName()));
+            } else if (missesSource) {
+                edgesWithUnspecifiedLocationsMessages.add(String.format("Edge %s -> %s uses an unspecified source", edge.getSource().getName(), edge.getTarget().getName()));
+            } else if (missesTarget) {
+                edgesWithUnspecifiedLocationsMessages.add(String.format("Edge %s -> %s uses an unspecified target", edge.getSource().getName(), edge.getTarget().getName()));
+            }
+        }
+
+        if (edgesWithUnspecifiedLocations.size() > 0) {
+            String joinedViolationMessages = String.join(", ", edgesWithUnspecifiedLocationsMessages);
+            String exceptionMessage = String.format("Automaton %s has %s edges with unspecified locations: %s", name, edgesWithUnspecifiedLocations.size(), joinedViolationMessages);
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+
+        if (!edges.stream().allMatch(edge -> locations.contains(edge.getSource()) && locations.contains(edge.getTarget()))) {
+            throw new IllegalArgumentException(String.format("Automaton %s has an edge with an unspecified source or target location", name));
         }
 
         this.name = name;
